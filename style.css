@@ -13,13 +13,14 @@
   --secondary-dark-color: black;
   --primary-light-color: #26a0da;
   --secondary-light-color: rgba(38, 161, 218, 0.557);
+  --background-color: rgba(198, 198, 198, 0.2);
 }
 
 body {
   margin: 0;
   font-family: "Poppins", Arial, Helvetica, sans-serif;
   color: var(--primary-dark-color);
-  background-color: rgba(198, 198, 198, 0.2);
+  background-color: var(--background-color);
 }
 
 /* Start Menu */
@@ -241,14 +242,14 @@ body {
 .game-board.o .cell:not(.x):not(.o):hover::before {
   width: calc(var(--mark-size) * 0.8);
   height: calc(var(--mark-size) * 0.8);
-  background-color: var(--primary-dark-color);
+  background-color: var(--primary-light-color);
 }
 
 .cell.o::after,
 .game-board.o .cell:not(.x):not(.o):hover::after {
   width: calc(var(--mark-size) * 0.6);
   height: calc(var(--mark-size) * 0.6);
-  background-color: var(--primary-light-color);
+  background-color: rgb(235, 247, 255);
 }
 
 .cell:first-child,

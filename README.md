@@ -2,9 +2,13 @@
 
 ## Comments
 
-Pre-start: I'm going to try and spend more time on the javascript and less time on the styling. 
+Pre-start: I'm going to try and spend more time on the javascript and less time on the styling.
 
-### Link 
+During: I ended up spending 80% of my time on styling and the 20% of the time I spent on javascript was mostly related to the styling, by mostly I mean completely. I was playing around with animations and transitions a lot and had a lot of fun, I love the style and colour theme I have and I only need a few more elements to complete it.
+
+In regards to the javascript, I will be able to have fun working that out tomorrow. I can't see it being too difficult but I'm not sure yet, maybe the AI will be difficult to implement. The specification really seems to be pushing us to write neater and more functional code so I might have to plan a little more than usual.
+
+### Link
 
 ### Specification
 
