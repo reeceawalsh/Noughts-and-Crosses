@@ -9,20 +9,160 @@
   --cell-size: 100px;
   --mark-size: calc(var(--cell-size) * 0.95);
   /* Color Variables */
-  --primary-dark-color: #333;
+  --primary-dark-color: #314755;
   --secondary-dark-color: black;
-  --primary-light-color: #fff;
-  --secondary-light-color: rgb(165, 165, 165);
+  --primary-light-color: #26a0da;
+  --secondary-light-color: rgba(38, 161, 218, 0.557);
 }
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Poppins", Arial, Helvetica, sans-serif;
   color: var(--primary-dark-color);
+  background-color: rgba(198, 198, 198, 0.2);
 }
 
+/* Start Menu */
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.gameTitle {
+  opacity: 0;
+  font-size: 6rem;
+  margin-bottom: 3rem;
+  color: var(--primary-light-color);
+  text-shadow: 2px 2px var(--primary-dark-color);
+  justify-self: center;
+}
+
+.startBtn {
+  transform: scale(0);
+  padding: 1rem 1rem;
+  text-align: center;
+  width: 10em;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+  font-size: 1.8rem;
+  cursor: pointer;
+  letter-spacing: 0.2rem;
+  color: black;
+}
+.startBtn {
+  background-image: linear-gradient(
+    to right,
+    #64ceff 0%,
+    #689dbb 50%,
+    #0075bd 100%
+  );
+}
+
+.startBtn:hover {
+  background-position: right center;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 400;
+  border: 2px solid var(--primary-dark-color);
+  letter-spacing: 0.25rem;
+  box-shadow: rgba(144, 206, 245, 0.2) 0px 0px 1px 25em;
+}
+
+/* Start Menu Animation */
+
+@keyframes titleUp {
+  from {
+    height: 80vh;
+  }
+  to {
+    height: 20vh;
+  }
+}
+
+/* Pick whether to play opponent or computer */
+.opponentOption {
+  display: none;
+  flex-direction: column;
+  margin-top: 2em;
+  align-items: center;
+}
+
+.opponentOptionText {
+  text-align: center;
+  font-size: 4rem;
+  font-weight: bold;
+  letter-spacing: 0.6rem;
+  text-shadow: 1px 1px rgb(0, 0, 0);
+}
+
+.choices {
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+}
+
+.opponentChoiceBtn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.2rem;
+  border: 2px solid black;
+  height: 2em;
+  width: 6em;
+  word-wrap: normal;
+  overflow: scroll;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: var(--secondary-light-color);
+  cursor: pointer;
+}
+
+.opponentChoiceBtn p {
+  display: none;
+  overflow: hidden;
+  margin-top: 10px;
+  font-weight: normal;
+}
+
+.opponentChoiceBtn:hover {
+  align-items: center;
+  font-weight: bold;
+  height: 8em;
+  width: 7em;
+  transition: linear 1s;
+  font-size: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+}
+
+.opponentChoiceBtn:hover p {
+  display: inline-block;
+  font-size: 1.5rem;
+}
+/* Choice animation */
+
+@keyframes opponentChoice {
+  from {
+    height: 5em;
+    width: 5em;
+  }
+  to {
+    height: 15em;
+    width: 15em;
+  }
+}
+/* Main */
 .title {
   text-align: center;
+  font-size: 3rem;
 }
 
 .main {
@@ -30,9 +170,12 @@ body {
   height: 100vh;
 }
 
+.main.hide {
+  display: none;
+}
 /* Game */
 .game-board {
-  height: 80vh;
+  height: 60vh;
   display: grid;
   grid-template-columns: repeat(3, auto);
   justify-content: center;
@@ -136,7 +279,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -164,16 +307,20 @@ body {
 /* Footer */
 
 .footer {
+  position: fixed;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   gap: 5px;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
 }
 
 .fa-github {
   font-size: 1.5rem;
-  color: var(--primary-dark-color);
+  color: var(--primary-light-color);
   transition: transform 0.3s ease-in-out;
   padding-left: 2px;
 }
