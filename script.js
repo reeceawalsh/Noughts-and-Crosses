@@ -7,7 +7,7 @@ var colours = document.querySelector(":root");
 
 // Runs the start menu function.
 const startMenu = () => {
-  // StartMenu declared functions
+  // Variables
   const startButton = document.getElementById("start-button");
   const menu = document.querySelector(".menu");
   const computerOpponent = document.getElementById("computerOpponent");
@@ -63,24 +63,121 @@ const gameMode = () => {
   function displayGame(opponent) {
     opponentOption.style.display = "none";
     main.classList.toggle("hide");
-    gameTitle.style.fontSize = "5rem";
-    // Decide which game to play
-    if (opponent === "computer") startComputerGame();
-    if (opponent == "player") startPlayerGame();
-    else return;
+    gameTitle.style.fontSize = "4rem";
+    if (opponent === "computer") {
+      colours.style.setProperty("--color-of-o", "rgb(237, 249, 254)");
+    } else {
+      colours.style.setProperty("--color-of-o", "rgb(214, 236, 246)");
+    }
+    startGame(opponent);
   }
-};
 
-// Starting computer game.
-const startComputerGame = () => {
-  colours.style.setProperty("--color-of-o", "rgb(237, 249, 254)");
-  console.log("starting computer game");
-};
+  const startGame = (opponent) => {
+    // Gameboard variables
+    const cellElements = document.querySelectorAll("[data-cell]");
+    const gameBoard = document.querySelector(".game-board");
+    const CROSSES_CLASS = "x";
+    const NOUGHTS_CLASS = "o";
+    const GAMEBOARD = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+    ];
+    const WINNING_GAMEBOARD = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+    let playerOnesTurn;
+    let win = true;
+    opponent = opponent;
 
-// Starting player game.
-const startPlayerGame = () => {
-  colours.style.setProperty("--color-of-o", "rgb(214, 236, 246)");
-  console.log("starting player game");
+    // Clear board ready for game to start
+    clearBoard();
+    function clearBoard() {
+      cellElements.forEach((cell) => {
+        cell.classList.remove(NOUGHTS_CLASS);
+        cell.classList.remove(CROSSES_CLASS);
+      });
+    }
+
+    // Once: true means that you can't click on that cell after it's been clicked.
+    cellElements.forEach((cell) => {
+      cell.addEventListener("click", handleClick, { once: true });
+    });
+
+    function handleClick(e) {
+      const cell = e.target;
+      const currentClass = playerOnesTurn ? NOUGHTS_CLASS : CROSSES_CLASS;
+      placeMark(cell, currentClass);
+      if (checkForWin(currentClass)) {
+        endGame(win);
+      }
+      if (checkForDraw()) {
+        endGame(!win);
+      }
+      switchTurns();
+    }
+
+    function placeMark(cell, currentClass) {
+      cell.classList.add(currentClass);
+    }
+
+    // If there are three cell elements in a row that have the class of the current class then it will return true (a win).
+    function checkForWin(currentClass) {
+      // Checks to see if any of the combinations are returning true. If one full sub-array in the array returns true then it's a win.
+      return WINNING_GAMEBOARD.some((combination) => {
+        // Checks to see if every element of the sub-array meets the next condition.
+        return combination.every((index) => {
+          // Checks each array and looks to see if that corresponding cell (cellElements[index]) has currentClass on it's class list.
+          return cellElements[index].classList.contains(currentClass);
+        });
+      });
+    }
+
+    // Checks if every cell contains a cross or a nought, if they do then it's a draw.
+    function checkForDraw() {
+      return [...cellElements].every((cell) => {
+        return (
+          cell.classList.contains(CROSSES_CLASS) ||
+          cell.classList.contains(NOUGHTS_CLASS)
+        );
+      });
+    }
+
+    // It's either player ones turn (true) or not player ones turn (false);
+    function switchTurns() {
+      playerOnesTurn = !playerOnesTurn;
+      gameBoard.classList.toggle(CROSSES_CLASS);
+      gameBoard.classList.toggle(NOUGHTS_CLASS);
+    }
+  };
+
+  // Ends Game
+  const endGame = (result, opponent) => {
+    const endOfGameMessage = document.getElementById("end-of-game-message");
+    const endOfGameMessageText = document.getElementById(
+      "end-of-game-message-text"
+    );
+    const restartGameBtn = document.getElementById("restart-button");
+
+    endOfGameMessage.style.display = "flex";
+    if (result) {
+      endOfGameMessageText.textContent = "Winner!";
+    } else {
+      endOfGameMessageText.textContent = "Draw!";
+    }
+
+    restartGameBtn.addEventListener("click", function () {
+      endOfGameMessage.style.display = "none";
+      startGame(opponent);
+    });
+  };
 };
 
 window.addEventListener("load", startMenu);
