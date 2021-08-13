@@ -8,6 +8,8 @@ During: I ended up spending 80% of my time on styling and the 20% of the time I 
 
 In regards to the javascript, I will be able to have fun working that out tomorrow. I can't see it being too difficult but I'm not sure yet, maybe the AI will be difficult to implement. The specification really seems to be pushing us to write neater and more functional code so I might have to plan a little more than usual.
 
+The only issue I can think of is that I have an idea how to create the game but not in the style that the specification requests (creating game, player, and gameboard objects), for a start I don't need a gameboard object because I created the board and can add the x's and o's via classList.add so my code is going to be a bit different than requested.
+
 ### Link
 
 ### Specification
