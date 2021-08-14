@@ -63,7 +63,7 @@ const gameMode = () => {
   function displayGame(opponent) {
     opponentOption.style.display = "none";
     main.classList.toggle("hide");
-    gameTitle.style.fontSize = "4rem";
+    gameTitle.style.fontSize = "3.5rem";
     if (opponent === "computer") {
       colours.style.setProperty("--color-of-o", "rgb(237, 249, 254)");
     } else {
@@ -71,112 +71,144 @@ const gameMode = () => {
     }
     startGame(opponent);
   }
+};
 
-  const startGame = (opponent) => {
-    // Gameboard variables
-    const cellElements = document.querySelectorAll("[data-cell]");
-    const gameBoard = document.querySelector(".game-board");
-    const CROSSES_CLASS = "x";
-    const NOUGHTS_CLASS = "o";
-    const GAMEBOARD = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-    ];
-    const WINNING_GAMEBOARD = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-    let playerOnesTurn;
-    let win = true;
-    opponent = opponent;
+const startGame = (opponent) => {
+  // Gameboard variables
+  const cellElements = document.querySelectorAll("[data-cell]");
+  const gameBoard = document.querySelector(".game-board");
+  const CROSSES_CLASS = "x";
+  const NOUGHTS_CLASS = "o";
+  const GAMEBOARD = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+  ];
+  const WINNING_GAMEBOARD = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  let playerOnesTurn = false;
+  console.log(playerOnesTurn);
+  let win = true;
+  opponent = opponent;
 
-    // Clear board ready for game to start
-    clearBoard();
-    function clearBoard() {
-      cellElements.forEach((cell) => {
-        cell.classList.remove(NOUGHTS_CLASS);
-        cell.classList.remove(CROSSES_CLASS);
-      });
+  // Clear board ready for game to start
+
+  // Once: true means that you can't click on that cell after it's been clicked.
+  cellElements.forEach((cell) => {
+    cell.addEventListener("click", handleClick, { once: true });
+  });
+
+  function handleClick(e) {
+    console.log(playerOnesTurn);
+    const cell = e.target;
+    const currentClass = playerOnesTurn ? NOUGHTS_CLASS : CROSSES_CLASS;
+    placeMark(cell, currentClass);
+    console.log("placedMark");
+    // ERROR - WHEN THE LAST X TO BE PLACED CREATES 3 IN A ROW, IT SHOWS AS A DRAW BECAUSE ALL OF THE SPACES HAVE BEEN TAKEN UP. NEEDS FIXING IN THE FUTURE.
+    if (checkForWin(currentClass)) {
+      endGame(win, currentClass);
+      console.log("foundWin");
     }
+    if (checkForDraw()) {
+      console.log("found draw");
+      endGame(!win);
+    }
+    switchTurns();
+    console.log("switched turns");
+  }
 
-    // Once: true means that you can't click on that cell after it's been clicked.
-    cellElements.forEach((cell) => {
-      cell.addEventListener("click", handleClick, { once: true });
+  function placeMark(cell, currentClass) {
+    cell.classList.add(currentClass);
+  }
+
+  // If there are three cell elements in a row that have the class of the current class then it will return true (a win).
+  function checkForWin(currentClass) {
+    // Checks to see if any of the combinations are returning true. If one full sub-array in the array returns true then it's a win.
+    return WINNING_GAMEBOARD.some((combination) => {
+      // Checks to see if every element of the sub-array meets the next condition.
+      return combination.every((index) => {
+        // Checks each array and looks to see if that corresponding cell (cellElements[index]) has currentClass on it's class list.
+        return cellElements[index].classList.contains(currentClass);
+      });
     });
+  }
 
-    function handleClick(e) {
-      const cell = e.target;
-      const currentClass = playerOnesTurn ? NOUGHTS_CLASS : CROSSES_CLASS;
-      placeMark(cell, currentClass);
-      if (checkForWin(currentClass)) {
-        endGame(win);
-      }
-      if (checkForDraw()) {
-        endGame(!win);
-      }
-      switchTurns();
-    }
+  // Checks if every cell contains a cross or a nought, if they do then it's a draw.
+  function checkForDraw() {
+    return [...cellElements].every((cell) => {
+      return (
+        cell.classList.contains(CROSSES_CLASS) ||
+        cell.classList.contains(NOUGHTS_CLASS)
+      );
+    });
+  }
 
-    function placeMark(cell, currentClass) {
-      cell.classList.add(currentClass);
-    }
-
-    // If there are three cell elements in a row that have the class of the current class then it will return true (a win).
-    function checkForWin(currentClass) {
-      // Checks to see if any of the combinations are returning true. If one full sub-array in the array returns true then it's a win.
-      return WINNING_GAMEBOARD.some((combination) => {
-        // Checks to see if every element of the sub-array meets the next condition.
-        return combination.every((index) => {
-          // Checks each array and looks to see if that corresponding cell (cellElements[index]) has currentClass on it's class list.
-          return cellElements[index].classList.contains(currentClass);
-        });
-      });
-    }
-
-    // Checks if every cell contains a cross or a nought, if they do then it's a draw.
-    function checkForDraw() {
-      return [...cellElements].every((cell) => {
-        return (
-          cell.classList.contains(CROSSES_CLASS) ||
-          cell.classList.contains(NOUGHTS_CLASS)
-        );
-      });
-    }
-
-    // It's either player ones turn (true) or not player ones turn (false);
-    function switchTurns() {
-      playerOnesTurn = !playerOnesTurn;
-      gameBoard.classList.toggle(CROSSES_CLASS);
-      gameBoard.classList.toggle(NOUGHTS_CLASS);
-    }
-  };
+  // It's either player ones turn (true) or not player ones turn (false);
+  function switchTurns() {
+    playerOnesTurn = playerOnesTurn ? false : true;
+    gameBoard.classList.toggle(CROSSES_CLASS);
+    gameBoard.classList.toggle(NOUGHTS_CLASS);
+  }
 
   // Ends Game
-  const endGame = (result, opponent) => {
+  const endGame = (result, winner, opponent) => {
     const endOfGameMessage = document.getElementById("end-of-game-message");
     const endOfGameMessageText = document.getElementById(
       "end-of-game-message-text"
     );
     const restartGameBtn = document.getElementById("restart-button");
+    const playerLeftScore = document.getElementById("playerLeftScore");
+    const playerRightScore = document.getElementById("playerRightScore");
+    const rightPlayer = document.getElementById("right-player").textContent;
+    const leftPlayer = document.getElementById("left-player").textContent;
 
-    endOfGameMessage.style.display = "flex";
-    if (result) {
-      endOfGameMessageText.textContent = "Winner!";
-    } else {
-      endOfGameMessageText.textContent = "Draw!";
+    let playerLeftScoreCount = 0;
+    let playerRightScoreCount = 0;
+
+    declareWinner(result, winner);
+
+    function declareWinner(result, winner) {
+      if (result) {
+        if (winner == CROSSES_CLASS) {
+          playerLeftScoreCount++;
+          playerLeftScore.textContent = playerLeftScoreCount;
+          endOfGameMessageText.textContent = `${leftPlayer} Wins!`;
+        }
+        if (winner === NOUGHTS_CLASS) {
+          playerRightScoreCount++;
+          playerRightScore.textContent = playerRightScoreCount;
+          endOfGameMessageText.textContent = `${rightPlayer} Wins!`;
+        }
+        endOfGameMessage.style.display = "flex";
+      } else {
+        endOfGameMessageText.textContent = "Draw!";
+        endOfGameMessage.style.display = "flex";
+      }
     }
 
     restartGameBtn.addEventListener("click", function () {
       endOfGameMessage.style.display = "none";
+      gameBoard.classList.remove(NOUGHTS_CLASS);
+      gameBoard.classList.remove(CROSSES_CLASS);
+      clearBoard();
       startGame(opponent);
     });
+
+    function clearBoard() {
+      gameBoard.classList.add(CROSSES_CLASS);
+      cellElements.forEach((cell) => {
+        cell.classList.remove(NOUGHTS_CLASS);
+        cell.classList.remove(CROSSES_CLASS);
+      });
+    }
   };
 };
 
