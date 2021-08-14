@@ -94,35 +94,49 @@ const startGame = (opponent) => {
     [0, 4, 8],
     [2, 4, 6],
   ];
-  let playerOnesTurn = false;
-  console.log(playerOnesTurn);
+  let playerOnesTurn;
   let win = true;
   opponent = opponent;
 
   // Clear board ready for game to start
-
+  clearBoard();
+  function clearBoard() {
+    cellElements.forEach((cell) => {
+      console.log(cell.target);
+      console.log(cell.target);
+      cell.classList.remove(NOUGHTS_CLASS);
+      cell.classList.remove(CROSSES_CLASS);
+      gameBoard.classList.remove(NOUGHTS_CLASS);
+      gameBoard.classList.remove(CROSSES_CLASS);
+    });
+    gameBoard.classList.add(CROSSES_CLASS);
+    playerOnesTurn = false;
+  }
   // Once: true means that you can't click on that cell after it's been clicked.
   cellElements.forEach((cell) => {
-    cell.addEventListener("click", handleClick, { once: true });
+    cell.onclick = handleClick;
   });
 
   function handleClick(e) {
-    console.log(playerOnesTurn);
     const cell = e.target;
     const currentClass = playerOnesTurn ? NOUGHTS_CLASS : CROSSES_CLASS;
-    placeMark(cell, currentClass);
-    console.log("placedMark");
+    if (
+      !cell.classList.contains(NOUGHTS_CLASS) ||
+      !cell.classList.contains(CROSSES_CLASS)
+    ) {
+      placeMark(cell, currentClass);
+    }
     // ERROR - WHEN THE LAST X TO BE PLACED CREATES 3 IN A ROW, IT SHOWS AS A DRAW BECAUSE ALL OF THE SPACES HAVE BEEN TAKEN UP. NEEDS FIXING IN THE FUTURE.
     if (checkForWin(currentClass)) {
       endGame(win, currentClass);
       console.log("foundWin");
-    }
-    if (checkForDraw()) {
+    } else if (checkForDraw()) {
       console.log("found draw");
       endGame(!win);
+    } else {
+      switchTurns();
+      console.log("switched turns");
     }
-    switchTurns();
-    console.log("switched turns");
   }
 
   function placeMark(cell, currentClass) {
@@ -157,58 +171,42 @@ const startGame = (opponent) => {
     gameBoard.classList.toggle(CROSSES_CLASS);
     gameBoard.classList.toggle(NOUGHTS_CLASS);
   }
+};
 
-  // Ends Game
-  const endGame = (result, winner, opponent) => {
-    const endOfGameMessage = document.getElementById("end-of-game-message");
-    const endOfGameMessageText = document.getElementById(
-      "end-of-game-message-text"
-    );
-    const restartGameBtn = document.getElementById("restart-button");
-    const playerLeftScore = document.getElementById("playerLeftScore");
-    const playerRightScore = document.getElementById("playerRightScore");
-    const rightPlayer = document.getElementById("right-player").textContent;
-    const leftPlayer = document.getElementById("left-player").textContent;
+// Ends Game
+const endGame = (result, winner) => {
+  const endOfGameMessage = document.getElementById("end-of-game-message");
+  const endOfGameMessageText = document.getElementById(
+    "end-of-game-message-text"
+  );
+  const restartGameBtn = document.getElementById("restart-button");
+  const playerLeftScore = document.getElementById("playerLeftScore");
+  const playerRightScore = document.getElementById("playerRightScore");
+  const rightPlayer = document.getElementById("right-player").textContent;
+  const leftPlayer = document.getElementById("left-player").textContent;
 
-    let playerLeftScoreCount = 0;
-    let playerRightScoreCount = 0;
+  declareWinner(result, winner);
 
-    declareWinner(result, winner);
-
-    function declareWinner(result, winner) {
-      if (result) {
-        if (winner == CROSSES_CLASS) {
-          playerLeftScoreCount++;
-          playerLeftScore.textContent = playerLeftScoreCount;
-          endOfGameMessageText.textContent = `${leftPlayer} Wins!`;
-        }
-        if (winner === NOUGHTS_CLASS) {
-          playerRightScoreCount++;
-          playerRightScore.textContent = playerRightScoreCount;
-          endOfGameMessageText.textContent = `${rightPlayer} Wins!`;
-        }
-        endOfGameMessage.style.display = "flex";
-      } else {
-        endOfGameMessageText.textContent = "Draw!";
-        endOfGameMessage.style.display = "flex";
+  function declareWinner(result, winner) {
+    if (result) {
+      if (winner == "x") {
+        playerLeftScore.textContent++;
+        endOfGameMessageText.textContent = `${leftPlayer} Wins!`;
       }
+      if (winner === "o") {
+        playerRightScore.textContent++;
+        endOfGameMessageText.textContent = `${rightPlayer} Wins!`;
+      }
+      endOfGameMessage.style.display = "flex";
+    } else {
+      endOfGameMessageText.textContent = "Draw!";
+      endOfGameMessage.style.display = "flex";
     }
+  }
 
-    restartGameBtn.addEventListener("click", function () {
-      endOfGameMessage.style.display = "none";
-      gameBoard.classList.remove(NOUGHTS_CLASS);
-      gameBoard.classList.remove(CROSSES_CLASS);
-      clearBoard();
-      startGame(opponent);
-    });
-
-    function clearBoard() {
-      gameBoard.classList.add(CROSSES_CLASS);
-      cellElements.forEach((cell) => {
-        cell.classList.remove(NOUGHTS_CLASS);
-        cell.classList.remove(CROSSES_CLASS);
-      });
-    }
+  restartGameBtn.onclick = function () {
+    endOfGameMessage.style.display = "none";
+    startGame();
   };
 };
 
