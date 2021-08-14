@@ -180,7 +180,8 @@ body {
     width: 15em;
   }
 }
-/* Main */
+
+/* Main Game */
 .title {
   text-align: center;
   font-size: 3rem;
@@ -203,14 +204,23 @@ body {
   align-items: center;
 }
 
-.playerScoreContainer h1 {
-  margin-top: 2rem;
-  font-size: 4rem;
+.startIndication {
+  display: none;
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+.score {
+  font-size: 3rem;
+}
+
+.playerSide.cell {
+  border: none !important;
 }
 
 .playerDisplay {
   align-self: flex-start;
-  font-size: 2rem;
+  font-size: 2.2rem;
   text-align: center;
 }
 

@@ -4,6 +4,10 @@ const gameTitle = document.querySelector(".gameTitle");
 const opponentOption = document.getElementById("opponentOption");
 const body = document.querySelector("body");
 var colours = document.querySelector(":root");
+const rightPlayer = document.getElementById("right-player");
+const leftPlayer = document.getElementById("left-player");
+let round = 0;
+let playerOnesTurn;
 
 // Runs the start menu function.
 const startMenu = () => {
@@ -45,6 +49,7 @@ const startMenu = () => {
 
 // This function will take into account which mode the player picked and then run that mode.
 const gameMode = () => {
+  const changeModeBtn = document.getElementById("changeModeBtn");
   // Computer opponent mode.
   computerOpponent.addEventListener("click", function () {
     body.style.backgroundColor = "var(--computer-color)";
@@ -77,6 +82,8 @@ const startGame = (opponent) => {
   // Gameboard variables
   const cellElements = document.querySelectorAll("[data-cell]");
   const gameBoard = document.querySelector(".game-board");
+  const leftPlayerSide = document.getElementById("leftPlayerSide");
+  const rightPlayerSide = document.getElementById("rightPlayerSide");
   const CROSSES_CLASS = "x";
   const NOUGHTS_CLASS = "o";
   const GAMEBOARD = [
@@ -94,23 +101,35 @@ const startGame = (opponent) => {
     [0, 4, 8],
     [2, 4, 6],
   ];
-  let playerOnesTurn;
+
   let win = true;
   opponent = opponent;
 
   // Clear board ready for game to start
   clearBoard();
   function clearBoard() {
+    round++;
+    console.log(round);
     cellElements.forEach((cell) => {
-      console.log(cell.target);
-      console.log(cell.target);
       cell.classList.remove(NOUGHTS_CLASS);
       cell.classList.remove(CROSSES_CLASS);
       gameBoard.classList.remove(NOUGHTS_CLASS);
       gameBoard.classList.remove(CROSSES_CLASS);
+      leftPlayerSide.classList.remove(NOUGHTS_CLASS);
+      leftPlayerSide.classList.remove(CROSSES_CLASS);
+      rightPlayerSide.classList.remove(NOUGHTS_CLASS);
+      rightPlayerSide.classList.remove(CROSSES_CLASS);
     });
-    gameBoard.classList.add(CROSSES_CLASS);
     playerOnesTurn = false;
+    gameBoard.classList.add(CROSSES_CLASS);
+    if (round % 2 !== 0) {
+      leftPlayerSide.classList.add(CROSSES_CLASS);
+      rightPlayerSide.classList.add(NOUGHTS_CLASS);
+    }
+    if (round % 2 == 0) {
+      rightPlayerSide.classList.add(CROSSES_CLASS);
+      leftPlayerSide.classList.add(NOUGHTS_CLASS);
+    }
   }
   // Once: true means that you can't click on that cell after it's been clicked.
   cellElements.forEach((cell) => {
@@ -182,8 +201,6 @@ const endGame = (result, winner) => {
   const restartGameBtn = document.getElementById("restart-button");
   const playerLeftScore = document.getElementById("playerLeftScore");
   const playerRightScore = document.getElementById("playerRightScore");
-  const rightPlayer = document.getElementById("right-player").textContent;
-  const leftPlayer = document.getElementById("left-player").textContent;
 
   declareWinner(result, winner);
 
@@ -191,11 +208,11 @@ const endGame = (result, winner) => {
     if (result) {
       if (winner == "x") {
         playerLeftScore.textContent++;
-        endOfGameMessageText.textContent = `${leftPlayer} Wins!`;
+        endOfGameMessageText.textContent = `${leftPlayer.textContent} Wins!`;
       }
       if (winner === "o") {
         playerRightScore.textContent++;
-        endOfGameMessageText.textContent = `${rightPlayer} Wins!`;
+        endOfGameMessageText.textContent = `${rightPlayer.textContent} Wins!`;
       }
       endOfGameMessage.style.display = "flex";
     } else {
