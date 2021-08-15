@@ -14,8 +14,6 @@ const startMenu = () => {
   // Variables
   const startButton = document.getElementById("start-button");
   const menu = document.querySelector(".menu");
-  const computerOpponent = document.getElementById("computerOpponent");
-  const playerOpponent = document.getElementById("playerOpponent");
 
   // Start Game button animation to scale it onto the page.
   appear();
