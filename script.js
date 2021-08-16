@@ -84,8 +84,8 @@ const startGame = (opponent) => {
   const rightPlayerSide = document.getElementById("rightPlayerSide");
   const CROSSES_CLASS = "x";
   const NOUGHTS_CLASS = "o";
-  const currentClass = playerTwosTurn ? NOUGHTS_CLASS : CROSSES_CLASS;
-  const computersClass = playerTwosTurn ? CROSSES_CLASS : NOUGHTS_CLASS;
+  let currentClass = playerTwosTurn ? NOUGHTS_CLASS : CROSSES_CLASS;
+  let computersClass = playerTwosTurn ? CROSSES_CLASS : NOUGHTS_CLASS;
   const GAMEBOARD = [
     [0, 1, 2],
     [3, 4, 5],
@@ -145,24 +145,24 @@ const startGame = (opponent) => {
 
   function handleClick(e) {
     const cell = e.target;
+    currentClass = playerTwosTurn ? NOUGHTS_CLASS : CROSSES_CLASS;
     if (
       !cell.classList.contains(NOUGHTS_CLASS) ||
       !cell.classList.contains(CROSSES_CLASS)
     ) {
       placeMark(cell, currentClass, computersClass);
     }
-    // ERROR - WHEN THE LAST X TO BE PLACED CREATES 3 IN A ROW, IT SHOWS AS A DRAW BECAUSE ALL OF THE SPACES HAVE BEEN TAKEN UP. NEEDS FIXING IN THE FUTURE.
+    if (opponent == "player") {
+      console.log("switching turns");
+      console.log(currentClass);
+      switchTurns();
+    }
     if (checkForWin(currentClass)) {
       endGame(win, currentClass, opponent);
       console.log("foundWin");
     } else if (checkForDraw()) {
       console.log("found draw");
       endGame(!win, opponent);
-    } else {
-      if (opponent == "player") {
-        switchTurns();
-        console.log("switched turns");
-      }
     }
   }
 
@@ -192,6 +192,34 @@ const startGame = (opponent) => {
       }
     }
   }
+  // if (difficulty === "average") {
+  //   let board = [];
+  //   for (let i = 0; i < 9; i++) {
+  //     if (cellElements[i].classList.contains(currentClass)) {
+  //       board.push(currentClass);
+  //     }
+  //     if (cellElements[i].classList.contains(computersClass)) {
+  //       board.push(computersClass);
+  //     }
+  //     if (
+  //       !cellElements[i].classList.contains(NOUGHTS_CLASS) &&
+  //       !cellElements[i].classList.contains(CROSSES_CLASS)
+  //     ) {
+  //       board.push("gap");
+  //     }
+  //   }
+  //   for (let i = 0; i < board.length; i++) {
+  //     if (
+  //       !cellElements[i].classList.contains(NOUGHTS_CLASS) &&
+  //       !cellElements[i].classList.contains(CROSSES_CLASS)
+  //     ) {
+  //       if (board[i] == currentClass) {
+  //         i++;
+  //         cellElements[i].classList.add(computersClass);
+  //         i--;
+  //       }
+  //   }
+  // }
 
   // If there are three cell elements in a row that have the class of the current class then it will return true (a win).
   function checkForWin(currentClass) {
@@ -220,6 +248,7 @@ const startGame = (opponent) => {
     playerTwosTurn = playerTwosTurn ? false : true;
     gameBoard.classList.toggle(CROSSES_CLASS);
     gameBoard.classList.toggle(NOUGHTS_CLASS);
+    console.log(playerTwosTurn);
   }
 };
 
