@@ -39,7 +39,7 @@ const startMenu = () => {
   // Shows opponent choice screen and takes away the game title.
   function opponentChoiceScreen() {
     opponentOption.style.display = "flex";
-    gameTitle.style.fontSize = "0.0000001rem";
+    gameTitle.style.fontSize = "-0.0000001rem";
   }
 
   // Go to the player function.
@@ -189,8 +189,13 @@ const startGame = (opponent) => {
     }
     // If computer then play player turn but not computers yet
     if (opponent == "computer") {
-      cell.classList.add(currentClass);
-      computersTurn(computersClass);
+      if (
+        !cell.classList.contains(NOUGHTS_CLASS) &&
+        !cell.classList.contains(CROSSES_CLASS)
+      ) {
+        cell.classList.add(currentClass);
+        computersTurn(computersClass);
+      }
     }
   }
 
@@ -207,7 +212,7 @@ const startGame = (opponent) => {
       }
     }
     if (checkForWin(computersClass)) {
-      endGame(win, currentClass, opponent);
+      endGame(win, computersClass, opponent);
       console.log("foundWin");
     } else if (checkForDraw()) {
       console.log("found draw");
@@ -261,13 +266,25 @@ const endGame = (result, winner, opponent) => {
 
   function declareWinner(result, winner) {
     if (result) {
+      console.log(round);
+      console.log(winner);
       if (winner == "x") {
-        playerLeftScore.textContent++;
-        endOfGameMessageText.textContent = `${leftPlayer.textContent} Wins!`;
-      }
-      if (winner === "o") {
+        if (round % 2 !== 0) {
+          playerLeftScore.textContent++;
+          endOfGameMessageText.textContent = `${leftPlayer.textContent} Wins!`;
+        }
+      } else {
         playerRightScore.textContent++;
         endOfGameMessageText.textContent = `${rightPlayer.textContent} Wins!`;
+      }
+      if (winner === "o") {
+        if (round % 2 == 0) {
+          playerLeftScore.textContent++;
+          endOfGameMessageText.textContent = `${leftPlayer.textContent} Wins!`;
+        } else {
+          playerRightScore.textContent++;
+          endOfGameMessageText.textContent = `${rightPlayer.textContent} Wins!`;
+        }
       }
       endOfGameMessage.style.display = "flex";
     } else {
