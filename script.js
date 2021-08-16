@@ -126,16 +126,17 @@ const startGame = (opponent) => {
       rightPlayerSide.classList.remove(NOUGHTS_CLASS);
       rightPlayerSide.classList.remove(CROSSES_CLASS);
     });
-    playerTwosTurn = playerTwosTurn ? false : true;
     if (round % 2 !== 0) {
       leftPlayerSide.classList.add(CROSSES_CLASS);
       rightPlayerSide.classList.add(NOUGHTS_CLASS);
       gameBoard.classList.add(CROSSES_CLASS);
+      playerTwosTurn = false;
     }
     if (round % 2 == 0) {
       rightPlayerSide.classList.add(CROSSES_CLASS);
       leftPlayerSide.classList.add(NOUGHTS_CLASS);
       gameBoard.classList.add(NOUGHTS_CLASS);
+      playerTwosTurn = true;
     }
   }
   computersFirstMove();
@@ -167,6 +168,7 @@ const startGame = (opponent) => {
       endGame(win, currentClass, opponent);
       console.log("foundWin");
     } else if (checkForDraw()) {
+      // HAVE A BUG THAT BREAKS THE GAME AFTER SOME DRAWS
       console.log("found draw");
       endGame(!win, opponent);
     }
@@ -204,9 +206,9 @@ const startGame = (opponent) => {
     if (checkForWin(computersClass)) {
       endGame(win, computersClass, opponent);
       console.log("foundWin");
-    } else if (checkForDraw()) {
-      console.log("found draw");
-      endGame(!win, opponent);
+      // } else if (checkForDraw()) {
+      //   console.log("found draw");
+      //   endGame(!win, opponent);
     }
   }
 
@@ -256,8 +258,6 @@ const endGame = (result, winner, opponent) => {
 
   function declareWinner(result, winner) {
     if (result) {
-      console.log(round);
-      console.log(winner);
       if (winner == "x") {
         if (round % 2 !== 0) {
           playerLeftScore.textContent++;
