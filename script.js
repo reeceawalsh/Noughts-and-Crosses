@@ -39,7 +39,7 @@ const startMenu = () => {
   // Shows opponent choice screen and takes away the game title.
   function opponentChoiceScreen() {
     opponentOption.style.display = "flex";
-    gameTitle.style.fontSize = "0.00001rem";
+    gameTitle.style.fontSize = "0.0000001rem";
   }
 
   // Go to the player function.

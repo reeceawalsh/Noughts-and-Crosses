@@ -443,7 +443,7 @@ body {
       height: 80vh;
     }
     to {
-      height: 15vh;
+      height: 0vh;
     }
   }
 }
