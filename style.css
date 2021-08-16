@@ -398,3 +398,52 @@ body {
 }
 
 /* Media Queries */
+@media (max-width: 380px) {
+  html {
+    font-size: 65%;
+  }
+
+  :root {
+    --cell-size: 80px;
+    --mark-size: calc(var(--cell-size) * 0.95);
+  }
+
+  .main {
+    margin-top: 0;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .playerScoreContainer {
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: space-evenly;
+    font-size: 140%;
+  }
+
+  .game-board {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .playerDisplay {
+    align-self: center;
+    justify-self: center;
+  }
+
+  #changeModeBtn {
+    margin-top: 10em;
+    display: none;
+  }
+
+  @keyframes titleUp {
+    from {
+      height: 80vh;
+    }
+    to {
+      height: 15vh;
+    }
+  }
+}
