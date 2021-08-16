@@ -1,4 +1,4 @@
-# Tic-Tac-Toe
+# Noughts and Crosses
 
 ## Comments
 
@@ -9,6 +9,8 @@ During: I ended up spending 80% of my time on styling and the 20% of the time I 
 In regards to the javascript, I will be able to have fun working that out tomorrow. I can't see it being too difficult but I'm not sure yet, maybe the AI will be difficult to implement. The specification really seems to be pushing us to write neater and more functional code so I might have to plan a little more than usual.
 
 The only issue I can think of is that I have an idea how to create the game but not in the style that the specification requests (creating game, player, and gameboard objects), for a start I don't need a gameboard object because I created the board and can add the x's and o's via classList.add so my code is going to be a bit different than requested.
+
+Finished base features: I haven't implemented a good AI, just a rubbish one. I could make a halfway decent one with a lot of code but I know there will be a way to do it with just a bit of code so I'll learn how to do that and implement it later. I've added mobile media queries and all the functionality requested is working apart from naming yourself which I didn't want anyway. 
 
 ### Link
 
