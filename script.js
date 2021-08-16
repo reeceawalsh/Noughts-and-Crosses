@@ -127,25 +127,15 @@ const startGame = (opponent) => {
       rightPlayerSide.classList.remove(CROSSES_CLASS);
     });
     playerTwosTurn = playerTwosTurn ? false : true;
-    if (opponent == "computer") {
-      if (round % 2 !== 0) {
-        gameBoard.classList.add(CROSSES_CLASS);
-      }
-      if (round % 2 == 0) {
-        gameBoard.classList.add(NOUGHTS_CLASS);
-      }
+    if (round % 2 !== 0) {
+      leftPlayerSide.classList.add(CROSSES_CLASS);
+      rightPlayerSide.classList.add(NOUGHTS_CLASS);
+      gameBoard.classList.add(CROSSES_CLASS);
     }
-    if (opponent == "player") {
-      if (round % 2 !== 0) {
-        leftPlayerSide.classList.add(CROSSES_CLASS);
-        rightPlayerSide.classList.add(NOUGHTS_CLASS);
-        gameBoard.classList.add(CROSSES_CLASS);
-      }
-      if (round % 2 == 0) {
-        rightPlayerSide.classList.add(CROSSES_CLASS);
-        leftPlayerSide.classList.add(NOUGHTS_CLASS);
-        gameBoard.classList.add(NOUGHTS_CLASS);
-      }
+    if (round % 2 == 0) {
+      rightPlayerSide.classList.add(CROSSES_CLASS);
+      leftPlayerSide.classList.add(NOUGHTS_CLASS);
+      gameBoard.classList.add(NOUGHTS_CLASS);
     }
   }
   computersFirstMove();
