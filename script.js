@@ -6,8 +6,9 @@ const body = document.querySelector("body");
 var colours = document.querySelector(":root");
 const rightPlayer = document.getElementById("right-player");
 const leftPlayer = document.getElementById("left-player");
+// const changeModeBtn = document.getElementById("changeModeBtn");
 let round = 0;
-let playerTwosTurn;
+let playerTwosTurn = true;
 
 // Runs the start menu function.
 const startMenu = () => {
@@ -69,9 +70,12 @@ const gameMode = () => {
     gameTitle.style.fontSize = "3.5rem";
     if (opponent === "computer") {
       colours.style.setProperty("--color-of-o", "rgb(237, 249, 254)");
+      // changeModeBtn.textContent = "Play a Friend";
     } else {
       colours.style.setProperty("--color-of-o", "rgb(214, 236, 246)");
+      // changeModeBtn.textContent = "Play the Computer";
     }
+
     startGame(opponent);
   }
 };
@@ -85,7 +89,7 @@ const startGame = (opponent) => {
   const CROSSES_CLASS = "x";
   const NOUGHTS_CLASS = "o";
   let currentClass = playerTwosTurn ? NOUGHTS_CLASS : CROSSES_CLASS;
-  let computersClass = playerTwosTurn ? CROSSES_CLASS : NOUGHTS_CLASS;
+  let computersClass = playerTwosTurn ? NOUGHTS_CLASS : CROSSES_CLASS;
   const GAMEBOARD = [
     [0, 1, 2],
     [3, 4, 5],
@@ -106,6 +110,8 @@ const startGame = (opponent) => {
   opponent = opponent;
   let difficulty = "easy";
 
+  // changeModeBtn.addEventListener = changeMode();
+
   // Clear board ready for game to start
   clearBoard();
   function clearBoard() {
@@ -121,19 +127,31 @@ const startGame = (opponent) => {
       rightPlayerSide.classList.remove(NOUGHTS_CLASS);
       rightPlayerSide.classList.remove(CROSSES_CLASS);
     });
-    playerTwosTurn = false;
-    gameBoard.classList.add(CROSSES_CLASS);
-    if (round % 2 !== 0) {
-      leftPlayerSide.classList.add(CROSSES_CLASS);
-      rightPlayerSide.classList.add(NOUGHTS_CLASS);
+    console.log(playerTwosTurn);
+    playerTwosTurn = playerTwosTurn ? false : true;
+    if (opponent == "computer") {
+      if (round % 2 !== 0) {
+        gameBoard.classList.add(CROSSES_CLASS);
+      }
+      if (round % 2 == 0) {
+        gameBoard.classList.add(NOUGHTS_CLASS);
+      }
     }
-    if (round % 2 == 0) {
-      rightPlayerSide.classList.add(CROSSES_CLASS);
-      leftPlayerSide.classList.add(NOUGHTS_CLASS);
+    if (opponent == "player") {
+      if (round % 2 !== 0) {
+        leftPlayerSide.classList.add(CROSSES_CLASS);
+        rightPlayerSide.classList.add(NOUGHTS_CLASS);
+      }
+      if (round % 2 == 0) {
+        rightPlayerSide.classList.add(CROSSES_CLASS);
+        leftPlayerSide.classList.add(NOUGHTS_CLASS);
+      }
     }
   }
+  console.log(playerTwosTurn);
   computersFirstMove();
   function computersFirstMove() {
+    console.log("working");
     if (opponent === "computer" && playerTwosTurn == true) {
       computersTurn(computersClass);
     }
@@ -167,12 +185,13 @@ const startGame = (opponent) => {
   }
 
   function placeMark(cell, currentClass, computersClass) {
+    console.log("placing mark");
     // If player vs player then add like normal
     if (opponent == "player") {
       cell.classList.add(currentClass);
     }
     // If computer then play player turn but not computers yet
-    if (opponent == "computer" && playerTwosTurn == false) {
+    if (opponent == "computer") {
       cell.classList.add(currentClass);
       computersTurn(computersClass);
     }
@@ -186,40 +205,18 @@ const startGame = (opponent) => {
           !cellElements[i].classList.contains(CROSSES_CLASS)
         ) {
           cellElements[i].classList.add(computersClass);
-          console.log("adding o");
           break;
         }
       }
     }
+    if (checkForWin(computersClass)) {
+      endGame(win, currentClass, opponent);
+      console.log("foundWin");
+    } else if (checkForDraw()) {
+      console.log("found draw");
+      endGame(!win, opponent);
+    }
   }
-  // if (difficulty === "average") {
-  //   let board = [];
-  //   for (let i = 0; i < 9; i++) {
-  //     if (cellElements[i].classList.contains(currentClass)) {
-  //       board.push(currentClass);
-  //     }
-  //     if (cellElements[i].classList.contains(computersClass)) {
-  //       board.push(computersClass);
-  //     }
-  //     if (
-  //       !cellElements[i].classList.contains(NOUGHTS_CLASS) &&
-  //       !cellElements[i].classList.contains(CROSSES_CLASS)
-  //     ) {
-  //       board.push("gap");
-  //     }
-  //   }
-  //   for (let i = 0; i < board.length; i++) {
-  //     if (
-  //       !cellElements[i].classList.contains(NOUGHTS_CLASS) &&
-  //       !cellElements[i].classList.contains(CROSSES_CLASS)
-  //     ) {
-  //       if (board[i] == currentClass) {
-  //         i++;
-  //         cellElements[i].classList.add(computersClass);
-  //         i--;
-  //       }
-  //   }
-  // }
 
   // If there are three cell elements in a row that have the class of the current class then it will return true (a win).
   function checkForWin(currentClass) {
@@ -280,6 +277,21 @@ const endGame = (result, winner, opponent) => {
       endOfGameMessage.style.display = "flex";
     }
   }
+  // function changeMode() {
+  //   console.log("switch opponent");
+  //   playerLeftScore.textContent = 0;
+  //   playerRightScore.textContent = 0;
+  //   if (opponent == "computer") {
+  //     changeModeBtn.textContent = "Play a Friend";
+  //     opponent = "player";
+  //   }
+  //   if (opponent == "player") {
+  //     changeModeBtn.textContent = "Play the Computer";
+  //     opponent = "computer";
+  //   }
+  //   console.log(opponent);
+  //   startGame(opponent);
+  // }
 
   restartGameBtn.onclick = function () {
     endOfGameMessage.style.display = "none";
