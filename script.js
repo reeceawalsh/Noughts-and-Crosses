@@ -116,7 +116,6 @@ const startGame = (opponent) => {
   clearBoard();
   function clearBoard() {
     round++;
-    console.log(round);
     cellElements.forEach((cell) => {
       cell.classList.remove(NOUGHTS_CLASS);
       cell.classList.remove(CROSSES_CLASS);
@@ -127,7 +126,6 @@ const startGame = (opponent) => {
       rightPlayerSide.classList.remove(NOUGHTS_CLASS);
       rightPlayerSide.classList.remove(CROSSES_CLASS);
     });
-    console.log(playerTwosTurn);
     playerTwosTurn = playerTwosTurn ? false : true;
     if (opponent == "computer") {
       if (round % 2 !== 0) {
@@ -141,17 +139,17 @@ const startGame = (opponent) => {
       if (round % 2 !== 0) {
         leftPlayerSide.classList.add(CROSSES_CLASS);
         rightPlayerSide.classList.add(NOUGHTS_CLASS);
+        gameBoard.classList.add(CROSSES_CLASS);
       }
       if (round % 2 == 0) {
         rightPlayerSide.classList.add(CROSSES_CLASS);
         leftPlayerSide.classList.add(NOUGHTS_CLASS);
+        gameBoard.classList.add(NOUGHTS_CLASS);
       }
     }
   }
-  console.log(playerTwosTurn);
   computersFirstMove();
   function computersFirstMove() {
-    console.log("working");
     if (opponent === "computer" && playerTwosTurn == true) {
       computersTurn(computersClass);
     }
@@ -185,7 +183,6 @@ const startGame = (opponent) => {
   }
 
   function placeMark(cell, currentClass, computersClass) {
-    console.log("placing mark");
     // If player vs player then add like normal
     if (opponent == "player") {
       cell.classList.add(currentClass);
@@ -251,6 +248,7 @@ const startGame = (opponent) => {
 
 // Ends Game
 const endGame = (result, winner, opponent) => {
+  console.log("ending game");
   const endOfGameMessage = document.getElementById("end-of-game-message");
   const endOfGameMessageText = document.getElementById(
     "end-of-game-message-text"
@@ -295,6 +293,7 @@ const endGame = (result, winner, opponent) => {
 
   restartGameBtn.onclick = function () {
     endOfGameMessage.style.display = "none";
+    console.log("restarting");
     startGame(opponent);
   };
 };
