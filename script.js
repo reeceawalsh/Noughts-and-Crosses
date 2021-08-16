@@ -81,6 +81,7 @@ const gameMode = () => {
 };
 
 const startGame = (opponent) => {
+  console.log("starting game");
   // Gameboard variables
   const cellElements = document.querySelectorAll("[data-cell]");
   const gameBoard = document.querySelector(".game-board");
@@ -151,6 +152,7 @@ const startGame = (opponent) => {
   });
 
   function handleClick(e) {
+    console.log("clicking");
     const cell = e.target;
     currentClass = playerTwosTurn ? NOUGHTS_CLASS : CROSSES_CLASS;
     if (
@@ -170,7 +172,7 @@ const startGame = (opponent) => {
     } else if (checkForDraw()) {
       // HAVE A BUG THAT BREAKS THE GAME AFTER SOME DRAWS
       console.log("found draw");
-      endGame(!win, opponent);
+      endGame(!win, currentClass, opponent);
     }
   }
 
@@ -205,7 +207,6 @@ const startGame = (opponent) => {
     }
     if (checkForWin(computersClass)) {
       endGame(win, computersClass, opponent);
-      console.log("foundWin");
       // } else if (checkForDraw()) {
       //   console.log("found draw");
       //   endGame(!win, opponent);
