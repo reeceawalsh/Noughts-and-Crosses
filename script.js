@@ -81,7 +81,6 @@ const gameMode = () => {
 };
 
 const startGame = (opponent) => {
-  console.log("starting game");
   // Gameboard variables
   const cellElements = document.querySelectorAll("[data-cell]");
   const gameBoard = document.querySelector(".game-board");
@@ -152,7 +151,6 @@ const startGame = (opponent) => {
   });
 
   function handleClick(e) {
-    console.log("clicking");
     const cell = e.target;
     currentClass = playerTwosTurn ? NOUGHTS_CLASS : CROSSES_CLASS;
     if (
@@ -162,16 +160,11 @@ const startGame = (opponent) => {
       placeMark(cell, currentClass, computersClass);
     }
     if (opponent == "player") {
-      console.log("switching turns");
-      console.log(currentClass);
       switchTurns();
     }
     if (checkForWin(currentClass)) {
       endGame(win, currentClass, opponent);
-      console.log("foundWin");
     } else if (checkForDraw()) {
-      // HAVE A BUG THAT BREAKS THE GAME AFTER SOME DRAWS
-      console.log("found draw");
       endGame(!win, currentClass, opponent);
     }
   }
@@ -207,9 +200,6 @@ const startGame = (opponent) => {
     }
     if (checkForWin(computersClass)) {
       endGame(win, computersClass, opponent);
-      // } else if (checkForDraw()) {
-      //   console.log("found draw");
-      //   endGame(!win, opponent);
     }
   }
 
@@ -240,13 +230,11 @@ const startGame = (opponent) => {
     playerTwosTurn = playerTwosTurn ? false : true;
     gameBoard.classList.toggle(CROSSES_CLASS);
     gameBoard.classList.toggle(NOUGHTS_CLASS);
-    console.log(playerTwosTurn);
   }
 };
 
 // Ends Game
 const endGame = (result, winner, opponent) => {
-  console.log("ending game");
   const endOfGameMessage = document.getElementById("end-of-game-message");
   const endOfGameMessageText = document.getElementById(
     "end-of-game-message-text"
@@ -301,7 +289,6 @@ const endGame = (result, winner, opponent) => {
 
   restartGameBtn.onclick = function () {
     endOfGameMessage.style.display = "none";
-    console.log("restarting");
     startGame(opponent);
   };
 };
