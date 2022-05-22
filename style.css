@@ -341,6 +341,7 @@ body {
 }
 
 .end-of-game-message button {
+  margin-top: 0.25em;
   font-size: 3rem;
   background-color: var(--primary-light-color);
   border: 1px solid var(--primary-dark-color);

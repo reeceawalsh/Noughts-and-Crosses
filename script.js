@@ -6,9 +6,16 @@ const body = document.querySelector("body");
 var colours = document.querySelector(":root");
 const rightPlayer = document.getElementById("right-player");
 const leftPlayer = document.getElementById("left-player");
-// const changeModeBtn = document.getElementById("changeModeBtn");
+const changeModeBtn = document.getElementById("change-mode-btn");
 let round = 0;
 let playerTwosTurn = true;
+const endOfGameMessage = document.getElementById("end-of-game-message");
+const endOfGameMessageText = document.getElementById(
+  "end-of-game-message-text"
+);
+const restartGameBtn = document.getElementById("restart-button");
+const playerLeftScore = document.getElementById("playerLeftScore");
+const playerRightScore = document.getElementById("playerRightScore");
 
 // Runs the start menu function.
 const startMenu = () => {
@@ -48,7 +55,6 @@ const startMenu = () => {
 
 // This function will take into account which mode the player picked and then run that mode.
 const gameMode = () => {
-  const changeModeBtn = document.getElementById("changeModeBtn");
   // Computer opponent mode.
   computerOpponent.addEventListener("click", function () {
     body.style.backgroundColor = "var(--computer-color)";
@@ -70,11 +76,25 @@ const gameMode = () => {
     gameTitle.style.fontSize = "3.5rem";
     if (opponent === "computer") {
       colours.style.setProperty("--color-of-o", "rgb(237, 249, 254)");
-      // changeModeBtn.textContent = "Play a Friend";
+      changeModeBtn.textContent = "Play a Friend";
     } else {
       colours.style.setProperty("--color-of-o", "rgb(214, 236, 246)");
-      // changeModeBtn.textContent = "Play the Computer";
+      changeModeBtn.textContent = "Play the Computer";
     }
+
+    // Change mode
+    // changeModeBtn.addEventListener("click", function () {
+    //   console.log(opponent);
+    //   if ((opponent = "player")) {
+    //     changeModeBtn.textContent = "Play the Computer";
+    //     opponent = "computer";
+    //     console.log("opp = player");
+    //   } else {
+    //     changeModeBtn.textContent = "Play a Friend";
+    //     opponent = "player";
+    //     console.log("opp = comp");
+    //   }
+    // });
 
     startGame(opponent);
   }
@@ -109,8 +129,6 @@ const startGame = (opponent) => {
   let win = true;
   opponent = opponent;
   let difficulty = "easy";
-
-  // changeModeBtn.addEventListener = changeMode();
 
   // Clear board ready for game to start
   clearBoard();
@@ -154,14 +172,10 @@ const startGame = (opponent) => {
     const cell = e.target;
     currentClass = playerTwosTurn ? NOUGHTS_CLASS : CROSSES_CLASS;
     if (
-      !cell.classList.contains(NOUGHTS_CLASS) ||
+      !cell.classList.contains(NOUGHTS_CLASS) &&
       !cell.classList.contains(CROSSES_CLASS)
-    ) {
+    )
       placeMark(cell, currentClass, computersClass);
-    }
-    if (opponent == "player") {
-      switchTurns();
-    }
     if (checkForWin(currentClass)) {
       endGame(win, currentClass, opponent);
     } else if (checkForDraw()) {
@@ -173,16 +187,12 @@ const startGame = (opponent) => {
     // If player vs player then add like normal
     if (opponent == "player") {
       cell.classList.add(currentClass);
+      switchTurns();
     }
     // If computer then play player turn but not computers yet
     if (opponent == "computer") {
-      if (
-        !cell.classList.contains(NOUGHTS_CLASS) &&
-        !cell.classList.contains(CROSSES_CLASS)
-      ) {
-        cell.classList.add(currentClass);
-        computersTurn(computersClass);
-      }
+      cell.classList.add(currentClass);
+      computersTurn(computersClass);
     }
   }
 
@@ -235,14 +245,6 @@ const startGame = (opponent) => {
 
 // Ends Game
 const endGame = (result, winner, opponent) => {
-  const endOfGameMessage = document.getElementById("end-of-game-message");
-  const endOfGameMessageText = document.getElementById(
-    "end-of-game-message-text"
-  );
-  const restartGameBtn = document.getElementById("restart-button");
-  const playerLeftScore = document.getElementById("playerLeftScore");
-  const playerRightScore = document.getElementById("playerRightScore");
-
   declareWinner(result, winner);
 
   function declareWinner(result, winner) {
@@ -271,7 +273,7 @@ const endGame = (result, winner, opponent) => {
       endOfGameMessage.style.display = "flex";
     }
   }
-  // function changeMode() {
+
   //   console.log("switch opponent");
   //   playerLeftScore.textContent = 0;
   //   playerRightScore.textContent = 0;
@@ -285,7 +287,7 @@ const endGame = (result, winner, opponent) => {
   //   }
   //   console.log(opponent);
   //   startGame(opponent);
-  // }
+  // };
 
   restartGameBtn.onclick = function () {
     endOfGameMessage.style.display = "none";
